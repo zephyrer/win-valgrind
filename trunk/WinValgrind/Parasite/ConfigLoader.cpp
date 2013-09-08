@@ -13,13 +13,18 @@ static char THIS_FILE[] = __FILE__;
 
 using namespace std;
 
-string sConfigFile = "config.xml";
 bool CConfigLoader::LoadConfig()
 {
 	pugi::xml_document doc;
 
+	m_csDllPath = g_Config::sDllPath;
+
    dlog("Loading config.xml...")
-   if(!doc.load_file("config.xml")) return false;
+   if(!doc.load_file(m_csDllPath + "config.xml")) 
+   {
+	   dlog("Failed to load config.xml")
+	   return false;
+   }
 
     pugi::xml_node pdb = doc.child("WinValgrind").child("PDBInfo");
 	pugi::xml_node pdbinfo = pdb.child("PDBInfo1");
@@ -83,25 +88,9 @@ bool CConfigLoader::LoadDLL()
     else 
     {
 		dlog("loading dbghelp.dll...")
-        CString csDllPath;
-        HMODULE hHookDll = GetModuleHandle( _T("parasite.dll"));
-        if( !GetModuleFileName( hHookDll, csDllPath.GetBuffer( MAX_PATH), MAX_PATH ))
-        {
-			dlog("GetModuleFileName failed...")
-			return false;
-        }
-        csDllPath.ReleaseBuffer();
-        int nPos = csDllPath.ReverseFind( _T('\\'));
-        if( 0 >= nPos )
-        {
-            dlog("Error...")
-			return false;
-        }
-        csDllPath = csDllPath.Left( nPos + 1 );
-        //csDllPath = "C:\\Program Files\\Debugging Tools for Windows (x86)\\";
-        csDllPath += _T("dbghelp.dll");
+        m_csDllPath += _T("dbghelp.dll");
         
-        hModule = LoadLibrary( csDllPath );
+        hModule = LoadLibrary( m_csDllPath );
         if( !hModule)
         {
 			dlog("loaded dbghelp.dll from system path")
@@ -115,7 +104,7 @@ bool CConfigLoader::LoadDLL()
         }
         else
         {
-			dlog(csDllPath+" loaded")
+			dlog(m_csDllPath+" loaded")
             pSymRefreshModuleList = (SymRefreshModuleListDef)GetProcAddress( hModule, _T("SymRefreshModuleList"));
         }
         

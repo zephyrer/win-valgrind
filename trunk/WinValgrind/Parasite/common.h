@@ -34,6 +34,7 @@ struct g_Config
 	static bool g_bHooked;
 	static CCriticalSection SyncObj;
 	static map<LPVOID,MEM_INFO> g_Config::m_MemMap;
+	static CString sDllPath;
 };
 
 

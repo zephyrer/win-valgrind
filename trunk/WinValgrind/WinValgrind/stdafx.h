@@ -32,6 +32,6 @@
 #include <pugixml.hpp>
 #include <string>
 
-#define DUMP_EVENT _T("_leak_dump_")
-#define CLEAR_LEAKS _T("_clr_all_leaks_")
-#define SHOW_PDB_INFO _T("_show_pdb_load_info_" )
+#define DUMP_EVENT _T("_leak_dump_evt_")
+#define CLEAR_LEAKS _T("_clr_all_leaks_evt_")
+#define SHOW_PDB_INFO _T("_show_pdb_load_info_evt_" )

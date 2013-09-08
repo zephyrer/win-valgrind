@@ -13,6 +13,7 @@ private:
 	bool LoadDLL();
 	CDialog m_ProgressDlg;
 	CString m_csPath;
+	CString m_csDllPath;
 protected:
 	static UINT __cdecl ThreadEntry( LPVOID pParam );
 	static BOOL CALLBACK SymRegisterCallbackProc64( HANDLE hProcess,

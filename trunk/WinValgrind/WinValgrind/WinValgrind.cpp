@@ -43,7 +43,7 @@ static void EnableDebugPriv(  )
 
 int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 {
-	HANDLE hMutex = CreateMutex( 0, 0, _T("leak_detector_injector"));
+	HANDLE hMutex = CreateMutex( 0, 0, _T("leak_detector_injector_evt_"));
     if( GetLastError() == ERROR_ALREADY_EXISTS )
     {
         _tprintf( _T("Only one instance of WinValgrind can be run at a time"));

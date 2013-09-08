@@ -5,3 +5,4 @@
 #include "stdafx.h"
 
 
+bool g_bLog = false;
