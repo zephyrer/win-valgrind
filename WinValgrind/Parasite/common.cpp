@@ -6,6 +6,7 @@ bool g_Config::g_bTrack = true;
 bool g_Config::g_bHooked = false;
 CCriticalSection g_Config::SyncObj;
 map<LPVOID,MEM_INFO> g_Config::m_MemMap;
+CString g_Config::sDllPath;
 
 #ifdef _M_IX86
 void StackDump( LPVOID pMem, DWORD dwBytes)

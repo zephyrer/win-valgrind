@@ -37,7 +37,11 @@ DWORD WINAPI CparasiteApp::DumpController( LPVOID pParam )
 	
 	dlog("DumpController started")
 	CConfigLoader ConfigLoad;
-	ConfigLoad.LoadConfig();
+	if(!ConfigLoad.LoadConfig())
+	{
+		dlog("LoadConfig failed!")
+		dlog("Continuing with default configuration...")
+	}
     
 	CparasiteApp* thisApp = (CparasiteApp*)pParam;
 	sm_pHookMgr = new CApiHookMgr();
@@ -122,6 +126,23 @@ DWORD WINAPI CparasiteApp::DumpController( LPVOID pParam )
 
 BOOL CparasiteApp::InitInstance()
 {
+	
+	HMODULE hHookDll = GetModuleHandleA( _T("parasite.dll"));
+    if( GetModuleFileNameA( hHookDll, g_Config::sDllPath.GetBuffer( MAX_PATH), MAX_PATH ))
+    {
+        g_Config::sDllPath.ReleaseBuffer();
+        int nPos = g_Config::sDllPath.ReverseFind('\\');
+        if( 0 < nPos )
+        {
+            g_Config::sDllPath = g_Config::sDllPath.Left( nPos + 1 );
+        }
+    }
+
+	char* pDoLog = getenv ("WINVAL_LOG");
+	if(pDoLog!=NULL)
+		g_bLog = atoi(pDoLog);
+
+
 	dlog("Parasite injected")
 	HANDLE hThread = ::CreateThread(0,0,DumpController,this,0,0);
 	CloseHandle(hThread);
@@ -383,7 +404,10 @@ int CparasiteApp::ExitInstance()
 {
     try
     {   
-        // Restore the hooks       
+        // Restore the hooks
+		dlog("DLL_PROCESS_DETACH")
+		dlog("Unhooking all functions")
+
         g_Config::g_bHooked = false;
         EmptyLeakMap();
 		sm_pHookMgr->UnHookAllFuncs();
