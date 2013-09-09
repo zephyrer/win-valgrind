@@ -92,12 +92,13 @@ DWORD WINAPI CparasiteApp::DumpController( LPVOID pParam )
     
     HANDLE hDumpEvent	 = CreateEvent( 0, TRUE, FALSE, DUMP_EVENT );
     HANDLE hMemRestEvent = CreateEvent( 0, TRUE, FALSE, CLEAR_LEAKS );
-    HANDLE hSymBolInfo   = CreateEvent( 0, TRUE, FALSE, SHOW_PDB_INFO );
-    HANDLE hArray[3] = { hDumpEvent, hMemRestEvent, hSymBolInfo };
+    
+    HANDLE hArray[2] = { hDumpEvent, hMemRestEvent };
+
     g_Config::g_bHooked = true; 
     while( 1 )
     {
-        DWORD dwWait = WaitForMultipleObjects( 3, hArray, FALSE, INFINITE );
+        DWORD dwWait = WaitForMultipleObjects( 2, hArray, FALSE, INFINITE );
         CSingleLock lockObj( &g_Config::SyncObj, TRUE );
         g_Config::g_bTrack = false;
         lockObj.Unlock();
@@ -106,6 +107,7 @@ DWORD WINAPI CparasiteApp::DumpController( LPVOID pParam )
 			dlog("Dumping leak trace")
             ResetEvent( hDumpEvent );
             DumpLeak();
+			dlog("Leak trace dumped")
         }
         else if( dwWait == WAIT_OBJECT_0 + 1)
         {
@@ -116,12 +118,9 @@ DWORD WINAPI CparasiteApp::DumpController( LPVOID pParam )
             ResetEvent( hMemRestEvent );
             
         }
-        else if( dwWait == WAIT_OBJECT_0 + 2)
+        else
         {
-          ResetEvent( hSymBolInfo );
-        }
-        else if( dwWait == WAIT_OBJECT_0 + 3)// exit event
-        {
+			dlog("Exiting")
 			break;
         }
         lockObj.Lock();
@@ -129,12 +128,8 @@ DWORD WINAPI CparasiteApp::DumpController( LPVOID pParam )
         lockObj.Unlock();
     }
 	
-	if(sm_pHookMgr)
-		delete sm_pHookMgr;
-
     CloseHandle( hDumpEvent );
     CloseHandle( hMemRestEvent );
-    CloseHandle( hSymBolInfo );
     return 0;
 }
 
@@ -165,6 +160,39 @@ BOOL CparasiteApp::InitInstance()
 	return CWinApp::InitInstance();
 }
 
+bool CparasiteApp::Cleanup()
+{
+	dlog("Cleanup")
+	dlog("Unhooking all functions")
+	sm_pHookMgr->UnHookAllFuncs();
+
+	
+	if(sm_pHookMgr)
+		delete sm_pHookMgr;
+
+    g_Config::g_bHooked = false;
+    EmptyLeakMap();
+
+	
+	
+
+	return true;
+}
+int CparasiteApp::ExitInstance() 
+{
+    try
+    {   
+        // Restore the hooks
+		dlog("DLL_PROCESS_DETACH")
+		
+		Cleanup();
+    }
+    catch (...)
+    {
+        
+    }
+    return CWinApp::ExitInstance();
+}
 
 CString GetGDIHandleType( HGDIOBJ hObj, SIZE_T nType )
 {
@@ -416,24 +444,7 @@ void EmptyLeakMap()
     }
 	g_Config::m_MemMap.clear();
 }
-int CparasiteApp::ExitInstance() 
-{
-    try
-    {   
-        // Restore the hooks
-		dlog("DLL_PROCESS_DETACH")
-		dlog("Unhooking all functions")
 
-        g_Config::g_bHooked = false;
-        EmptyLeakMap();
-		sm_pHookMgr->UnHookAllFuncs();
-    }
-    catch (...)
-    {
-        
-    }
-    return CWinApp::ExitInstance();
-}
 
 void CopyStack(LPVOID lpExisting, LPVOID lpNew, int nType )
 {

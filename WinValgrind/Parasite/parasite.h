@@ -27,7 +27,7 @@ protected:
 	static DWORD WINAPI DumpController( LPVOID pParam );
 public:
 	CparasiteApp();
-
+	bool Cleanup();
 // Overrides
 public:
 	virtual BOOL InitInstance();
