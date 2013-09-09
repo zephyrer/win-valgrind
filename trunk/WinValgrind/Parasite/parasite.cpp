@@ -49,36 +49,46 @@ DWORD WINAPI CparasiteApp::DumpController( LPVOID pParam )
 	//
 	// Initially we must hook a few important functions
 	//
-	sm_pHookMgr->HookSystemFuncs();
+	dlog("Hooking system functions.")
+	if(sm_pHookMgr->HookSystemFuncs())
+	{
+		dlog("System API's hooked.")
+	}
 	
 
     if( HT_MEMORY == g_Config::g_HookType )
     {
-        
+        dlog("Starting memory leak detection.")
+		dlog("Hooking memory allocation functions.")
     }
     else if( HT_GDI == g_Config::g_HookType )
     {
-        
+		dlog("Starting GDI object leak detection.")
+		dlog("Hooking GDI object allocation functions.")
     }
     else if( HT_HANDLE == g_Config::g_HookType )
     {
+		dlog("Starting Handle leak detection.")
+		dlog("Hooking Handle allocation functions.")
+
 		if(sm_pHookMgr->HookHandleAllocFuncs())
 		{
-			dlog("Handle alloc API's hooked")
+			dlog("Handle alloc API's hooked.")
 		}
     }
     else
     {
-		dlog("Invalid hook type")
-		dlog("Setting Handle API hook")
+		dlog("Invalid hook type.")
+		dlog("Setting Handle API hooks.")
 
 		g_Config::g_HookType = HT_HANDLE;
         if(sm_pHookMgr->HookHandleAllocFuncs())
 		{
-			dlog("Handle alloc API's hooked")
+			dlog("Handle alloc API's hooked.")
 		}
     }
  
+	dlog_v("Hooked API count",sm_pHookMgr->HookedFunctionCount())
     
     HANDLE hDumpEvent	 = CreateEvent( 0, TRUE, FALSE, DUMP_EVENT );
     HANDLE hMemRestEvent = CreateEvent( 0, TRUE, FALSE, CLEAR_LEAKS );
@@ -93,12 +103,14 @@ DWORD WINAPI CparasiteApp::DumpController( LPVOID pParam )
         lockObj.Unlock();
         if( dwWait == WAIT_OBJECT_0 )
         {
+			dlog("Dumping leak trace")
             ResetEvent( hDumpEvent );
             DumpLeak();
         }
         else if( dwWait == WAIT_OBJECT_0 + 1)
         {
-            lockObj.Lock();
+            dlog("Clearing leak map")
+			lockObj.Lock();
             EmptyLeakMap();
             lockObj.Unlock();
             ResetEvent( hMemRestEvent );
@@ -110,12 +122,16 @@ DWORD WINAPI CparasiteApp::DumpController( LPVOID pParam )
         }
         else if( dwWait == WAIT_OBJECT_0 + 3)// exit event
         {
-            break;
+			break;
         }
         lockObj.Lock();
         g_Config::g_bTrack = true;
         lockObj.Unlock();
     }
+	
+	if(sm_pHookMgr)
+		delete sm_pHookMgr;
+
     CloseHandle( hDumpEvent );
     CloseHandle( hMemRestEvent );
     CloseHandle( hSymBolInfo );

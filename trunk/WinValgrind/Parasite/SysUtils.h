@@ -63,11 +63,11 @@ static BOOL WINAPI IsWindowsNT4()
 	        (vi.dwMajorVersion == 4) );
 }
 
-//---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
 // ModuleFromAddress
 //
 // Returns the HMODULE that contains the specified memory address
-//---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
 static HMODULE ModuleFromAddress(PVOID pv) 
 {
 	MEMORY_BASIC_INFORMATION mbi;
@@ -76,11 +76,11 @@ static HMODULE ModuleFromAddress(PVOID pv)
 	        ? (HMODULE) mbi.AllocationBase : NULL);
 }
 
-//---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
 // GetProcessHostFullName
 //
 // Return the path and the name of the current process
-//---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
 static BOOL GetProcessHostFullName(char* pszFullFileName)
 {
 	DWORD dwResult = 0;
@@ -96,11 +96,11 @@ static BOOL GetProcessHostFullName(char* pszFullFileName)
 }
 
 
-//---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
 // GetProcessHostName
 //
 // Return the name of the current process
-//---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
 static BOOL GetProcessHostName(char* pszFullFileName)
 {
 	BOOL  bResult;
@@ -120,11 +120,11 @@ static BOOL GetProcessHostName(char* pszFullFileName)
 	return bResult;
 }
 
-//---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
 // GetProcessHostName
 //
 // Return the name of the current process
-//---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
 static BOOL ExtractModuleFileName(char* pszFullFileName)
 {
 	BOOL  bResult = FALSE;
@@ -145,10 +145,10 @@ static BOOL ExtractModuleFileName(char* pszFullFileName)
 	return bResult;
 }
 
-//---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
 // ReplaceFileName
 //
-//---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
 static BOOL ReplaceFileName(
 	char* pszOldFileName,
 	char* pszBaseNewFileName,
@@ -182,10 +182,10 @@ static BOOL ReplaceFileName(
 	return bResult;
 }
 
-//---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
 // ReplaceFileName
 //
-//---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
 static BOOL ReplaceFileName(
 	HINSTANCE hOldFile,
 	char*     pszBaseNewFileName,
@@ -339,11 +339,11 @@ static BOOL GetNextCommaSeparatedString(
 }
 
 
-//---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
 // UnicodeToAnsi
 // 
 // Tranlsates Unicode to Ansi strings
-//---------------------------------------------------------------------------
+//////////////////////////////////////////////////////////////////////////////
 static BOOL UnicodeToAnsi(
 	LPWSTR pszwUniString, 
 	LPSTR  pszAnsiBuff,
