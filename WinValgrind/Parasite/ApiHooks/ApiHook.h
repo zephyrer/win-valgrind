@@ -5,8 +5,8 @@
 #include <map>
 #include <string>
 using namespace std;
-#include "..\LockMgr.h"
-#include "..\ModuleInstance.h"
+#include <LockMgr.h>
+#include <ModuleInstance.h>
 
 
 #define HOOK_IMPORT(Function, DLL) HookImport(#DLL ##".dll",#Function,(PROC)CApiHookMgr::My##Function)

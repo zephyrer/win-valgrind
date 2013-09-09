@@ -1,7 +1,7 @@
 #ifndef _COMMON_DEF_
 #define _COMMON_DEF_
 
-#include "stdafx.h"
+#include "..\stdafx.h"
 #include <map>
 #include <vector>
 #include <afxmt.h>

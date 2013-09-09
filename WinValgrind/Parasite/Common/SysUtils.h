@@ -2,7 +2,7 @@
 #define _SYSUTILS_H_
 
 
-#include "stdafx.h"
+#include "..\stdafx.h"
 
 
 static BOOL IsToolHelpSupported()

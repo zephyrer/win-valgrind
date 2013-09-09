@@ -6,32 +6,32 @@
 #include "ConfigLoader.h"
 
 
-// CparasiteApp
+// CParasiteApp
 
-BEGIN_MESSAGE_MAP(CparasiteApp, CWinApp)
+BEGIN_MESSAGE_MAP(CParasiteApp, CWinApp)
 END_MESSAGE_MAP()
 
 
 
 //////////////////////////////////////////////////////////////////////////////////
 
-CApiHookMgr*  CparasiteApp::sm_pHookMgr       = NULL;
+CApiHookMgr*  CParasiteApp::sm_pHookMgr       = NULL;
 
 
-// CparasiteApp construction
+// CParasiteApp construction
 
-CparasiteApp::CparasiteApp()
+CParasiteApp::CParasiteApp()
 {
 	// TODO: add construction code here,
 	// Place all significant initialization in InitInstance
 }
 
 
-// The one and only CparasiteApp object
+// The one and only CParasiteApp object
 
-CparasiteApp theApp;
+CParasiteApp theApp;
 
-DWORD WINAPI CparasiteApp::DumpController( LPVOID pParam )
+DWORD WINAPI CParasiteApp::DumpController( LPVOID pParam )
 {
     AFX_MANAGE_STATE( AfxGetStaticModuleState());
 	
@@ -43,7 +43,7 @@ DWORD WINAPI CparasiteApp::DumpController( LPVOID pParam )
 		dlog("Continuing with default configuration...")
 	}
     
-	CparasiteApp* thisApp = (CparasiteApp*)pParam;
+	CParasiteApp* thisApp = (CParasiteApp*)pParam;
 	sm_pHookMgr = new CApiHookMgr();
 	
 	//
@@ -133,9 +133,9 @@ DWORD WINAPI CparasiteApp::DumpController( LPVOID pParam )
     return 0;
 }
 
-// CparasiteApp initialization
+// CParasiteApp initialization
 
-BOOL CparasiteApp::InitInstance()
+BOOL CParasiteApp::InitInstance()
 {
 	
 	HMODULE hHookDll = GetModuleHandleA( _T("parasite.dll"));
@@ -160,7 +160,7 @@ BOOL CparasiteApp::InitInstance()
 	return CWinApp::InitInstance();
 }
 
-bool CparasiteApp::Cleanup()
+bool CParasiteApp::Cleanup()
 {
 	dlog("Cleanup")
 	dlog("Unhooking all functions")
@@ -178,7 +178,7 @@ bool CparasiteApp::Cleanup()
 
 	return true;
 }
-int CparasiteApp::ExitInstance() 
+int CParasiteApp::ExitInstance() 
 {
     try
     {   
