@@ -11,7 +11,6 @@ CString g_Config::sDllPath;
 #ifdef _M_IX86
 void StackDump( LPVOID pMem, DWORD dwBytes)
 {
-        dlog("Inside StackDump")
 		STACKFRAME64 stStackFrame = {0};
         CONTEXT stContext = {0};
         stContext.ContextFlags = CONTEXT_ALL;    
@@ -210,7 +209,6 @@ void CreateCallStack( LPVOID lpMem, SIZE_T dwBytes )
         if( g_Config::g_bHooked && g_Config::g_bTrack )
         {
             g_Config::g_bTrack = false;
-            dlog("Dumping stack")
 			StackDump( lpMem, dwBytes );
 #ifdef ENABLE_LOG
             CString cs;
