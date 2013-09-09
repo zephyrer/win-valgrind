@@ -39,9 +39,6 @@
     <ClCompile Include="ConfigLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\3rdParty\pugixml.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Common\common.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
@@ -55,6 +52,9 @@
       <Filter>Source Files\ApiHooks</Filter>
     </ClCompile>
     <ClCompile Include="parasite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\pugixml.cpp">
       <Filter>3rdParty</Filter>
     </ClCompile>
   </ItemGroup>
