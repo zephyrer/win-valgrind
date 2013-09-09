@@ -1,8 +1,9 @@
 #include "..\stdafx.h"
+#include <common.h>
+#include <SysUtils.h>
+
 #include "ApiHook.h"
-#include "..\common.h"
-#include "..\SysUtils.h"
-#include "..\LockMgr.h"
+
 
 
 
